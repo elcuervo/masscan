@@ -28,8 +28,8 @@ struct OutputType {
     void (*close)(struct Output *out, FILE *fp);
     void (*status)(struct Output *out, FILE *fp,
                    time_t timestamp, int status,
-                   unsigned ip, unsigned ip_proto, unsigned port, 
-                   unsigned reason, unsigned ttl);
+                   unsigned ip, unsigned ip_proto, unsigned port,
+                   unsigned reason, unsigned ttl, const unsigned char mac[6]);
     void (*banner)(struct Output *out, FILE *fp,
                    time_t timestamp, unsigned ip, unsigned ip_proto,
                    unsigned port, enum ApplicationProtocol proto,
