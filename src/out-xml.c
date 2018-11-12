@@ -64,12 +64,13 @@ xml_out_close(struct Output *out, FILE *fp)
  ****************************************************************************/
 static void
 xml_out_status(struct Output *out, FILE *fp, time_t timestamp, int status,
-               unsigned ip, unsigned ip_proto, unsigned port, unsigned reason, unsigned ttl)
+               unsigned ip, unsigned ip_proto, unsigned port, unsigned reason, unsigned ttl, const unsigned char mac[6])
 {
     char reason_buffer[128];
     UNUSEDPARM(out);
     fprintf(fp, "<host endtime=\"%u\">"
                     "<address addr=\"%u.%u.%u.%u\" addrtype=\"ipv4\"/>"
+                    "<mac addr=\"%02x:%02x:%02x:%02x:%02x:%02x\">"
                     "<ports>"
                     "<port protocol=\"%s\" portid=\"%u\">"
                     "<state state=\"%s\" reason=\"%s\" reason_ttl=\"%u\"/>"
@@ -82,6 +83,7 @@ xml_out_status(struct Output *out, FILE *fp, time_t timestamp, int status,
         (ip>>16)&0xFF,
         (ip>> 8)&0xFF,
         (ip>> 0)&0xFF,
+        mac[0],mac[1], mac[2], mac[3], mac[4], mac[5],
         name_from_ip_proto(ip_proto),
         port,
         status_string(status),
