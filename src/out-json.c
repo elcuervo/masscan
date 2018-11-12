@@ -29,7 +29,7 @@ json_out_close(struct Output *out, FILE *fp)
  ****************************************************************************/
 static void
 json_out_status(struct Output *out, FILE *fp, time_t timestamp, int status,
-               unsigned ip, unsigned ip_proto, unsigned port, unsigned reason, unsigned ttl)
+               unsigned ip, unsigned ip_proto, unsigned port, unsigned reason, unsigned ttl, const unsigned char mac[6])
 {
     char reason_buffer[128];
     UNUSEDPARM(out);
@@ -42,10 +42,12 @@ json_out_status(struct Output *out, FILE *fp, time_t timestamp, int status,
         fprintf(fp, ",\n");
     else
         out->is_first_record_seen = 1;
-    
+
     fprintf(fp, "{ ");
     fprintf(fp, "  \"ip\": \"%u.%u.%u.%u\", ",
             (ip>>24)&0xFF, (ip>>16)&0xFF, (ip>> 8)&0xFF, (ip>> 0)&0xFF);
+    fprintf(fp, "  \"mac\": \"%02x:%02x:%02x:%02x:%02x:%02x\", ",
+            mac[0],mac[1], mac[2], mac[3], mac[4], mac[5]);
     fprintf(fp, "  \"timestamp\": \"%d\", \"ports\": [ {\"port\": %u, \"proto\": \"%s\", \"status\": \"%s\","
                 " \"reason\": \"%s\", \"ttl\": %u} ] ",
                 (int) timestamp,
